@@ -1,50 +1,40 @@
-# Chama Payment Reminder Bot
+# 💸 Chama Payment Reminder Bot
 
-A simple Supabase-powered backend for a WhatsApp bot that helps chama (group savings) members stay on top of their payments.  
-
----
-
-## 📌 Project Overview
-
-This project provides a lightweight, cloud-hosted database to manage:
-- **Members** — people in the chama.
-- **Payments** — payment records linked to each member.
-- **Reminders** — automated reminder messages for upcoming or overdue payments.
-
-The WhatsApp bot connects to this database to:
-- Add new members when they join.
-- Create payments with due dates.
-- Send automated payment reminders.
-- Mark payments as paid.
+This is a simple MVP WhatsApp bot for chama groups (savings groups) to help automate payment reminders.
 
 ---
 
-## 🗂️ Database Schema
+## 📌 What it does
 
-**Tables:**
+✅ Connects to a **Supabase** database with three tables:
+- `members`: stores member names and phone numbers.
+- `payments`: stores each member's payment status.
 
-| Table     | Description                               |
-|-----------|-------------------------------------------|
-| `members` | Stores member details (name, phone number). |
-| `payments`| Links payments to members with due amounts and status. |
-| `reminders` | Stores reminder messages linked to payments. |
-
-**Relationships:**
-
-- `payments.member_id` → `members.id`
-- `reminders.payment_id` → `payments.id`
+✅ Uses **Twilio’s WhatsApp API** to:
+- Fetch all members with unpaid payments.
+- Send each unpaid member a personalized WhatsApp reminder.
 
 ---
 
-## 🔑 Supabase Project
+## ⚙️ How it works
 
-**Project URL:**
+1. **Supabase**  
+   - Stores your members and payments.
+   - Each payment has `is_paid = true/false`.
 
-https://rscfkcduopypdfznxlrt.supabase.co
+2. **Python script**  
+   - Uses `supabase-py` to check who hasn’t paid.
+   - Uses `twilio` to send WhatsApp messages via the Twilio Sandbox.
 
-**Anon/Public API Key:**
+3. **Run locally**  
+   ```bash
+   python send_whatsapp_reminders.py
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzY2ZrY2R1b3B5cGRmem54bHJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjQxNzUsImV4cCI6MjA2NzA0MDE3NX0.9kvWEmTGgrseB5h0VZqRNw32F1a5g1JukUBBrO116Qc
+4. Member receives WhatsApp reminder
+   - For example:
+     Hi Test User! 👋 
+This is your friendly ChamaBot.
+Please remember to pay your contribution. Thank you!
 
----
+
 
